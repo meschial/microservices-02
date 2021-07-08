@@ -6,14 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEvaluation;
 use App\Http\Resources\EvaluationResource;
 use App\Models\Evaluation;
+use App\Services\CompanyService;
 
 class EvaluationController extends Controller
 {
     protected $repository;
+    protected $companyService;
 
-    public function __construct(Evaluation $model)
+    public function __construct(Evaluation $model, CompanyService $companyService)
     {
         $this->repository = $model;
+        $this->companyService = $companyService;
     }
     /**
      * Display a listing of the resource.
@@ -35,6 +38,8 @@ class EvaluationController extends Controller
      */
     public function store(StoreEvaluation $request, $company)
     {
+        $company = $this->companyService->getCompany($company);
+
         $evaluation = $this->repository->create($request->validated());
 
         return new EvaluationResource($evaluation);
