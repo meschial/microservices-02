@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Services\Traits\ConsumeExternalService;
+use Illuminate\Support\Facades\Http;
 
 class CompanyService
 {
@@ -19,8 +20,6 @@ class CompanyService
 
   public function getCompany(string $company)
   {
-    $request = $this->request('get', "/companies/{$company}");
-
-    dd($request->body);
+    return $this->request('get', "/companies/{$company}");
   }
 }
