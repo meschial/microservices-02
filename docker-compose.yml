@@ -13,6 +13,9 @@ services:
     working_dir: /var/www/
     volumes: 
       - ./:/var/www
+    depends_on: 
+      - redis
+      - queue
     networks: 
       - microservices02
   
@@ -36,8 +39,8 @@ services:
         uid: 1000
       context: ./
       dockerfile: Dockerfile
-    command: 'php artisan queue:work'
     restart: unless-stopped
+    command: "php artisan queue:work"
     volumes:
       - ./:/var/www
     depends_on: 
@@ -64,8 +67,6 @@ services:
   # redis
   redis:
     image: redis:latest
-    ports: 
-      - 6379:6379
     networks: 
       - microservices02
 

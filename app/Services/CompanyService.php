@@ -2,8 +2,7 @@
 
 namespace App\Services;
 
-use App\Services\Traits\ConsumeExternalService;
-use Illuminate\Support\Facades\Http;
+use Marcosfgti\MicroservicesCommon\Services\Traits\ConsumeExternalService;
 
 class CompanyService
 {
