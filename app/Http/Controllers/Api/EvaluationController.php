@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEvaluation;
 use App\Http\Resources\EvaluationResource;
-use App\Jobs\EvaluationCreated;
+use App\Jobs\NewEvaluationCreated;
 use App\Models\Evaluation;
 use App\Services\CompanyService;
 
@@ -19,6 +19,7 @@ class EvaluationController extends Controller
         $this->repository = $model;
         $this->companyService = $companyService;
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -50,8 +51,7 @@ class EvaluationController extends Controller
         $company = json_decode($response->body());
 
         $evaluation = $this->repository->create($request->validated());
-
-        EvaluationCreated::dispatch($company->data->email)->onQueue('queue_email');
+        NewEvaluationCreated::dispatch($company->data->email)->onQueue('queue_email');
 
         return new EvaluationResource($evaluation);
     }
